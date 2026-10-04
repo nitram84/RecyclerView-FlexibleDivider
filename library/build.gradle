@@ -1,5 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
 
 android {
     namespace = "com.yqritc.recyclerviewflexibledivider"
@@ -12,9 +14,28 @@ android {
         versionCode VERSION_CODE as int
         versionName VERSION_NAME
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:23.1.1'
     implementation 'com.android.support:recyclerview-v7:23.1.1'
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.nitram84'
+                artifactId = 'RecyclerView-FlexibleDivider'
+                version = '1.2.9-SNAPSHOT'
+            }
+        }
+    }
 }
